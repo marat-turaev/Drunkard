@@ -6,13 +6,13 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws InterruptedException {
         Map map = new Map(10, 10);
 
         while (true) {
             map.doStep();
             map.draw();
-            System.in.read();
+            Thread.sleep(100);
         }
     }
 }

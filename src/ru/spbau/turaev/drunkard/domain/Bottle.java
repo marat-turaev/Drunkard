@@ -1,13 +1,13 @@
 package ru.spbau.turaev.drunkard.domain;
 
-public class Post implements MapObject {
-    public Post(int x, int y) {
+public class Bottle implements MapObject {
+    private int x;
+    private int y;
+
+    public Bottle(int x, int y) {
         this.x = x;
         this.y = y;
     }
-
-    private int x;
-    private int y;
 
     @Override
     public int getX() {
@@ -21,6 +21,6 @@ public class Post implements MapObject {
 
     @Override
     public char getSymbol() {
-        return 'C';
+        return 'B';
     }
 }

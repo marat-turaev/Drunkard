@@ -18,7 +18,7 @@ public class Drunkard implements MapObject {
     }
 
     public void move() {
-        if (state == DrunkardState.Sleeping) {
+        if (state == DrunkardState.Sleeping || state == DrunkardState.Lying) {
             return;
         }
 
@@ -49,6 +49,14 @@ public class Drunkard implements MapObject {
                 break;
         }
 
+        boolean wasMoved = false;
+        if (x != newX || y != newY) {
+            wasMoved = true;
+        }
+        if (wasMoved) {
+            DropBottle();
+        }
+
         MapObject neighbour = map.getObjectByCoordinates(newX, newY);
         if (neighbour instanceof Empty) {
             x = newX;
@@ -57,13 +65,27 @@ public class Drunkard implements MapObject {
         if (neighbour instanceof Post) {
             Sleep();
         }
+        if (neighbour instanceof Bottle) {
+            Lie();
+        }
         if (neighbour instanceof Drunkard) {
             Drunkard neighbourDrunkard = (Drunkard) neighbour;
             if (neighbourDrunkard.state == DrunkardState.Sleeping) {
                 Sleep();
             }
         }
+    }
 
+    private void DropBottle() {
+        int rand = RandomUtils.randInt(1, 30);
+        if (rand == 1) {
+            map.spawnBottle(x, y);
+        }
+    }
+
+    private void Lie() {
+        this.state = DrunkardState.Lying;
+        this.symbol = '&';
     }
 
     private void Sleep() {

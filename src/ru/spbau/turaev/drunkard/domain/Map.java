@@ -3,30 +3,25 @@ package ru.spbau.turaev.drunkard.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: marat
- * Date: 05/03/14
- * Time: 00:53
- * To change this template use File | Settings | File Templates.
- */
 public class Map {
     private int x;
     private int y;
     private List<MapObject> mapObjects;
+    private List<Drunkard> drunkards;
     private int stepCount;
 
     public Map(int x, int y) {
         this.x = x;
         this.y = y;
         mapObjects = new ArrayList<MapObject>();
+        drunkards = new ArrayList<Drunkard>();
         mapObjects.add(new Post(7, 7));
     }
 
     public void doStep() {
         stepCount++;
-        for (MapObject mapObject : mapObjects) {
-            mapObject.move();
+        for (Drunkard drunkard : drunkards) {
+            drunkard.move();
         }
 
         if (stepCount % 20 == 0) {
@@ -86,9 +81,15 @@ public class Map {
 
     private void spawnDrunkard() {
         if (isFree(0, 9)) {
-            mapObjects.add(new Drunkard(0, 9, this));
+            Drunkard drunkard = new Drunkard(0, 9, this);
+            drunkards.add(drunkard);
+            mapObjects.add(drunkard);
         } else {
             //TODO: if 0;9 cell is occupied
         }
+    }
+
+    public void spawnBottle(int x, int y) {
+        mapObjects.add(new Bottle(x, y));
     }
 }
