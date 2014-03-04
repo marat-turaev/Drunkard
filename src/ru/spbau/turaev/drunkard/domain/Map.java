@@ -9,6 +9,7 @@ public class Map {
     private List<MapObject> mapObjects;
     private List<Drunkard> drunkards;
     private int stepCount;
+    private int inTavernDrunkards;
 
     public Map(int x, int y) {
         this.x = x;
@@ -20,11 +21,16 @@ public class Map {
 
     public void doStep() {
         stepCount++;
+
         for (Drunkard drunkard : drunkards) {
             drunkard.move();
         }
 
         if (stepCount % 20 == 0) {
+            inTavernDrunkards++;
+        }
+
+        if (inTavernDrunkards != 0) {
             spawnDrunkard();
         }
     }
@@ -84,12 +90,13 @@ public class Map {
             Drunkard drunkard = new Drunkard(0, 9, this);
             drunkards.add(drunkard);
             mapObjects.add(drunkard);
+            inTavernDrunkards--;
         } else {
-            //TODO: if 0;9 cell is occupied
+            inTavernDrunkards++;
         }
     }
 
-    public void spawnBottle(int x, int y) {
+    public void spawnBottleAt(int x, int y) {
         mapObjects.add(new Bottle(x, y));
     }
 }

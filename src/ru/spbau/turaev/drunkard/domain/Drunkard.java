@@ -76,7 +76,7 @@ public class Drunkard extends MapObject {
     private void DropBottle() {
         int rand = RandomUtils.randInt(1, 30);
         if (rand == 1) {
-            map.spawnBottle(x, y);
+            map.spawnBottleAt(x, y);
         }
     }
 
