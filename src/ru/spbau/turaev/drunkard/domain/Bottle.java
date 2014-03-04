@@ -1,22 +1,8 @@
 package ru.spbau.turaev.drunkard.domain;
 
-public class Bottle implements MapObject {
-    private int x;
-    private int y;
-
+public class Bottle extends MapObject {
     public Bottle(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
+        super(x, y);
     }
 
     @Override

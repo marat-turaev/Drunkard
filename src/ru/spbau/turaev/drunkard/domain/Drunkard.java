@@ -2,16 +2,13 @@ package ru.spbau.turaev.drunkard.domain;
 
 import ru.spbau.turaev.drunkard.util.RandomUtils;
 
-public class Drunkard implements MapObject {
+public class Drunkard extends MapObject {
     private DrunkardState state;
-    private int x;
-    private int y;
     private Map map;
     private char symbol;
 
     public Drunkard(int x, int y, Map map) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.map = map;
 
         Activate();
@@ -96,16 +93,6 @@ public class Drunkard implements MapObject {
     private void Activate() {
         this.state = DrunkardState.Active;
         this.symbol = 'D';
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
     }
 
     @Override

@@ -1,22 +1,8 @@
 package ru.spbau.turaev.drunkard.domain;
 
-public class Post implements MapObject {
+public class Post extends MapObject {
     public Post(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    private int x;
-    private int y;
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
+        super(x, y);
     }
 
     @Override

@@ -1,7 +1,21 @@
 package ru.spbau.turaev.drunkard.domain;
 
-public interface MapObject {
-    public int getX();
-    public int getY();
-    public char getSymbol();
+public abstract class MapObject {
+    public MapObject(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    protected int x;
+    protected int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public abstract char getSymbol();
 }
