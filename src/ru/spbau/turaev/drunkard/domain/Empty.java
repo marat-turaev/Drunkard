@@ -4,17 +4,17 @@ package ru.spbau.turaev.drunkard.domain;
  * Created with IntelliJ IDEA.
  * User: marat
  * Date: 05/03/14
- * Time: 00:51
+ * Time: 01:28
  * To change this template use File | Settings | File Templates.
  */
-public class Post implements MapObject {
-    public Post(int x, int y) {
-        this.x = x;
+public class Empty implements MapObject {
+    public Empty(int y, int x) {
         this.y = y;
+        this.x = x;
     }
 
-    private int x;
     private int y;
+    private int x;
 
     @Override
     public int getX() {
@@ -28,7 +28,7 @@ public class Post implements MapObject {
 
     @Override
     public char getSymbol() {
-        return 'C';
+        return '.';
     }
 
     @Override
