@@ -1,4 +1,4 @@
-package ru.spbau.turaev.drunkard.domain;
+package ru.spbau.turaev.drunkard.domain.objects;
 
 public class Bottle extends MapObject {
     public Bottle(int x, int y) {

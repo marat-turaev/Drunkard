@@ -1,6 +1,15 @@
-package ru.spbau.turaev.drunkard.domain;
+package ru.spbau.turaev.drunkard.domain.objects;
 
+import ru.spbau.turaev.drunkard.domain.Map;
 import ru.spbau.turaev.drunkard.util.RandomUtils;
+
+
+enum DrunkardState {
+    ACTIVE,
+    SLEEPING,
+    LYING
+}
+
 
 public class Drunkard extends MapObject {
     private DrunkardState state;
@@ -10,12 +19,22 @@ public class Drunkard extends MapObject {
     public Drunkard(int x, int y, Map map) {
         super(x, y);
         this.map = map;
-
-        activate();
+        this.state = DrunkardState.ACTIVE;
+        hide();
     }
 
     public void move() {
         if (state == DrunkardState.SLEEPING || state == DrunkardState.LYING) {
+            return;
+        }
+
+        if (isHidden()) {
+            if (!map.isFree(0, 9)) {
+                return;
+            }
+            this.x = 0;
+            this.y = 9;
+            appear();
             return;
         }
 
@@ -80,9 +99,14 @@ public class Drunkard extends MapObject {
         this.symbol = 'Z';
     }
 
-    private void activate() {
-        this.state = DrunkardState.ACTIVE;
+    public boolean isLyingOrSleeping() {
+        return state == DrunkardState.LYING || state == DrunkardState.SLEEPING;
+    }
+
+    @Override
+    public void appear() {
         this.symbol = 'D';
+        super.appear();
     }
 
     @Override

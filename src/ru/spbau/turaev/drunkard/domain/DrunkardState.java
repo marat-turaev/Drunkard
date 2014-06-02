@@ -1,7 +1,0 @@
-package ru.spbau.turaev.drunkard.domain;
-
-public enum DrunkardState {
-    SLEEPING,
-    ACTIVE,
-    LYING
-}

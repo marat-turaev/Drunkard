@@ -1,20 +1,31 @@
 package ru.spbau.turaev.drunkard.domain;
 
+import ru.spbau.turaev.drunkard.domain.objects.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
+    private final Lamp lamp;
     private int x;
     private int y;
     private List<MapObject> mapObjects;
     private int stepCount;
-    private int inTavernDrunkards;
 
     public Map(int x, int y) {
         this.x = x;
         this.y = y;
-        mapObjects = new ArrayList<MapObject>();
+
+        mapObjects = new ArrayList<>();
         mapObjects.add(new Post(7, 7));
+        Lamp lamp = new Lamp(10, 3, this);
+        this.lamp = lamp;
+        mapObjects.add(lamp);
+        mapObjects.add(new Policeman(14, 3, this));
+    }
+
+    public Lamp getLamp() {
+        return lamp;
     }
 
     public void doStep() {
@@ -25,17 +36,13 @@ public class Map {
         }
 
         if (stepCount % 20 == 0) {
-            inTavernDrunkards++;
-        }
-
-        if (inTavernDrunkards != 0) {
             spawnDrunkard();
         }
     }
 
     public boolean isFree(int x, int y) {
         for (MapObject obj : mapObjects) {
-            if (x == obj.getX() && y == obj.getY()) {
+            if (x == obj.getX() && y == obj.getY() && !obj.isHidden()) {
                 return false;
             }
         }
@@ -45,7 +52,7 @@ public class Map {
 
     public MapObject getObjectByCoordinates(int x, int y) {
         for (MapObject obj : mapObjects) {
-            if (x == obj.getX() && y == obj.getY()) {
+            if (x == obj.getX() && y == obj.getY() && !obj.isHidden()) {
                 return obj;
             }
         }
@@ -71,16 +78,14 @@ public class Map {
     }
 
     private void spawnDrunkard() {
-        if (isFree(0, 9)) {
-            Drunkard drunkard = new Drunkard(0, 9, this);
-            mapObjects.add(drunkard);
-            inTavernDrunkards--;
-        } else {
-            inTavernDrunkards++;
-        }
+        mapObjects.add(new Drunkard(0, 9, this));
     }
 
     public void spawnBottleAt(int x, int y) {
         mapObjects.add(new Bottle(x, y));
+    }
+
+    public List<MapObject> objects() {
+        return mapObjects;
     }
 }

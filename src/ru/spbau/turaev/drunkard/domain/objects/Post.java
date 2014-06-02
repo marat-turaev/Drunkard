@@ -1,4 +1,4 @@
-package ru.spbau.turaev.drunkard.domain;
+package ru.spbau.turaev.drunkard.domain.objects;
 
 public class Post extends MapObject {
     public Post(int x, int y) {
