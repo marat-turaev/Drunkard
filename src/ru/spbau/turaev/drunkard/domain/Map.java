@@ -56,22 +56,9 @@ public class Map {
     }
 
     public void draw() {
-        char[][] map = new char[x][y];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < x; j++) {
-                map[i][j] = '.';
-            }
-        }
-
-        for (MapObject obj : mapObjects) {
-            int x = obj.getX();
-            int y = obj.getY();
-            map[x][y] = obj.getSymbol();
-        }
-
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < x; j++) {
-                System.out.print(map[i][j]);
+                System.out.print(getObjectByCoordinates(i, j).getSymbol());
             }
             System.out.println();
         }

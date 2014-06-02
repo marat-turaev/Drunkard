@@ -18,4 +18,8 @@ public abstract class MapObject {
     }
 
     public abstract char getSymbol();
+
+    public void move() {
+        return;
+    }
 }

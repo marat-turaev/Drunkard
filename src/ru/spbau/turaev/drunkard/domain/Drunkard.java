@@ -11,11 +11,11 @@ public class Drunkard extends MapObject {
         super(x, y);
         this.map = map;
 
-        Activate();
+        activate();
     }
 
     public void move() {
-        if (state == DrunkardState.Sleeping || state == DrunkardState.Lying) {
+        if (state == DrunkardState.SLEEPING || state == DrunkardState.LYING) {
             return;
         }
 
@@ -51,7 +51,7 @@ public class Drunkard extends MapObject {
             wasMoved = true;
         }
         if (wasMoved) {
-            DropBottle();
+            dropBottle();
         }
 
         MapObject neighbour = map.getObjectByCoordinates(newX, newY);
@@ -60,38 +60,38 @@ public class Drunkard extends MapObject {
             y = newY;
         }
         if (neighbour instanceof Post) {
-            Sleep();
+            sleep();
         }
         if (neighbour instanceof Bottle) {
-            Lie();
+            lie();
         }
         if (neighbour instanceof Drunkard) {
             Drunkard neighbourDrunkard = (Drunkard) neighbour;
-            if (neighbourDrunkard.state == DrunkardState.Sleeping) {
-                Sleep();
+            if (neighbourDrunkard.state == DrunkardState.SLEEPING) {
+                sleep();
             }
         }
     }
 
-    private void DropBottle() {
+    private void dropBottle() {
         int rand = RandomUtils.randInt(1, 30);
         if (rand == 1) {
             map.spawnBottleAt(x, y);
         }
     }
 
-    private void Lie() {
-        this.state = DrunkardState.Lying;
+    private void lie() {
+        this.state = DrunkardState.LYING;
         this.symbol = '&';
     }
 
-    private void Sleep() {
-        this.state = DrunkardState.Sleeping;
+    private void sleep() {
+        this.state = DrunkardState.SLEEPING;
         this.symbol = 'Z';
     }
 
-    private void Activate() {
-        this.state = DrunkardState.Active;
+    private void activate() {
+        this.state = DrunkardState.ACTIVE;
         this.symbol = 'D';
     }
 
