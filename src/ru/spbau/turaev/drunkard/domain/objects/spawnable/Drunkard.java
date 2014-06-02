@@ -2,7 +2,6 @@ package ru.spbau.turaev.drunkard.domain.objects.spawnable;
 
 import ru.spbau.turaev.drunkard.domain.Map;
 import ru.spbau.turaev.drunkard.domain.objects.MapObject;
-import ru.spbau.turaev.drunkard.util.RandomUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -55,8 +54,8 @@ public class Drunkard extends Spawnable {
     }
 
     private void dropBottle() {
-        int rand = RandomUtils.randInt(1, 30);
-        if (rand == 1) {
+        int rand = random.nextInt(30);
+        if (rand == 0) {
             map.spawnBottleAt(x, y);
         }
     }

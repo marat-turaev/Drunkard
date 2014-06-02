@@ -10,21 +10,21 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Map {
-    private final Lamp lamp;
+    private Lamp lamp = new Lamp(10, 3, this);
     private int maxX;
     private int maxY;
-    private List<MapObject> mapObjects;
+    private List<MapObject> mapObjects = new ArrayList<>();
     private int stepCount;
 
     public Map(int maxX, int maxY) {
         this.maxX = maxX;
         this.maxY = maxY;
+        initSpawn();
+    }
 
-        mapObjects = new ArrayList<>();
-        mapObjects.add(new Post(7, 7));
-        Lamp lamp = new Lamp(10, 3, this);
-        this.lamp = lamp;
+    private void initSpawn() {
         mapObjects.add(lamp);
+        mapObjects.add(new Post(7, 7));
         mapObjects.add(new Policeman(14, 3, this));
         mapObjects.add(new Tramp(0, 4, this));
     }
