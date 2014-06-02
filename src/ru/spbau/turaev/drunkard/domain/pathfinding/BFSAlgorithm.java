@@ -1,7 +1,6 @@
 package ru.spbau.turaev.drunkard.domain.pathfinding;
 
 import ru.spbau.turaev.drunkard.domain.Map;
-import ru.spbau.turaev.drunkard.domain.objects.EmptyCell;
 import ru.spbau.turaev.drunkard.domain.objects.MapObject;
 
 import java.util.HashMap;
@@ -35,7 +34,7 @@ public class BFSAlgorithm {
         while (from != to && !queue.isEmpty()) {
             from = queue.poll();
             for (MapObject object : map.getAdjacentCells(from)) {
-                if (!parents.containsKey(object) && (object instanceof EmptyCell || object == to)) {
+                if (!parents.containsKey(object) && (object.isFree() || object == to)) {
                     parents.put(object, from);
                     queue.offer(object);
                 }

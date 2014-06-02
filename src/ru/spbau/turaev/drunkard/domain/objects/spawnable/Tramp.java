@@ -27,7 +27,7 @@ public class Tramp extends Spawnable {
 
     @Override
     public void move() {
-        if (state == TrampState.HIDDEN && timer.isZero()) {
+        if (timer.isZero()) {
             super.move();
         }
 

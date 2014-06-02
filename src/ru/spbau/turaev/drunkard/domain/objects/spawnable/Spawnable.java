@@ -3,6 +3,9 @@ package ru.spbau.turaev.drunkard.domain.objects.spawnable;
 import ru.spbau.turaev.drunkard.domain.Map;
 import ru.spbau.turaev.drunkard.domain.objects.MapObject;
 
+/**
+ * Represents an object that has a spawn point.
+ */
 public abstract class Spawnable extends MapObject {
     protected final int spawnX;
     protected final int spawnY;

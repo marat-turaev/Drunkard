@@ -4,6 +4,8 @@ import ru.spbau.turaev.drunkard.domain.Map;
 import ru.spbau.turaev.drunkard.domain.objects.MapObject;
 import ru.spbau.turaev.drunkard.util.RandomUtils;
 
+import java.util.List;
+import java.util.Random;
 
 enum DrunkardState {
     HIDDEN,
@@ -12,8 +14,8 @@ enum DrunkardState {
     LYING
 }
 
-
 public class Drunkard extends Spawnable {
+    private Random random = new Random();
     private DrunkardState state;
     private char symbol;
 
@@ -29,40 +31,19 @@ public class Drunkard extends Spawnable {
             return;
         }
 
-        int newX = x;
-        int newY = y;
-
-        int rand = RandomUtils.randInt(1, 4);
-        switch (rand) {
-            case 1:
-                if (x > 0) {
-                    newX = x - 1;
-                }
-                break;
-            case 2:
-                if (y > 0) {
-                    newY = y - 1;
-                }
-                break;
-            case 3:
-                if (x < map.getMaxX()) {
-                    newX = x + 1;
-                }
-                break;
-            case 4:
-                if (y < map.getMaxY()) {
-                    newY = y + 1;
-                }
-                break;
+        List<MapObject> adjacent = map.getAdjacentCells(this);
+        int rand = random.nextInt(4);
+        if (rand >= adjacent.size()) {
+            return;
         }
 
-        MapObject neighbour = map.getObjectByCoordinates(newX, newY);
+        MapObject neighbour = adjacent.get(rand);
         neighbour.hitBy(this);
 
-        if (map.isFree(newX, newY)) {
+        if (neighbour.isFree()) {
             dropBottle();
-            x = newX;
-            y = newY;
+            x = neighbour.getX();
+            y = neighbour.getY();
         }
     }
 

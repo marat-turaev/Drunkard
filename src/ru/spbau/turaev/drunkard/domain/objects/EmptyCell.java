@@ -30,4 +30,9 @@ public class EmptyCell extends MapObject {
         result = 31 * result + y;
         return result;
     }
+
+    @Override
+    public boolean isFree() {
+        return true;
+    }
 }

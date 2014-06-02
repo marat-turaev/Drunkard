@@ -2,6 +2,9 @@ package ru.spbau.turaev.drunkard.domain.objects;
 
 import ru.spbau.turaev.drunkard.domain.objects.spawnable.Drunkard;
 
+/**
+ * Any object on a map in the game.
+ */
 public abstract class MapObject {
     private boolean hidden;
     protected int x;
@@ -34,19 +37,28 @@ public abstract class MapObject {
         return;
     }
 
+    /**
+     * Manhattan distance between two objects
+     * @param other `to' object
+     * @return distance between `this' and `to'
+     */
     public final double distanceTo(MapObject other) {
-        return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y));
+        return Math.max(Math.abs(this.x - other.x), Math.abs(this.y - other.y));
     }
 
     public final boolean isHidden() {
         return hidden;
     }
 
-    public void hide() {
+    public final void hide() {
         this.hidden = true;
     }
 
     public void appear() {
         this.hidden = false;
+    }
+
+    public boolean isFree() {
+        return false;
     }
 }
