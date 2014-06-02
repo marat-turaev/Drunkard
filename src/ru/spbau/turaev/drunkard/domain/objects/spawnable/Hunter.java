@@ -14,6 +14,11 @@ enum HunterState {
     GOING_HOME
 }
 
+/**
+ * Represents object that hunts a `target'.
+ *
+ * @param <T> -- `target' type
+ */
 public abstract class Hunter<T extends MapObject> extends Spawnable {
     protected HunterState state;
     private BFSAlgorithm algorithm = new BFSAlgorithm(map);
@@ -46,13 +51,9 @@ public abstract class Hunter<T extends MapObject> extends Spawnable {
         onMoveEnds();
     }
 
-    protected void onMoveEnds() {
-        return;
-    }
+    protected abstract void onMoveEnds();
 
-    protected boolean canLeaveHome() {
-        return true;
-    }
+    protected abstract boolean canLeaveHome();
 
     private void search() {
         Optional<T> maybeTarget = getTargets().findFirst();

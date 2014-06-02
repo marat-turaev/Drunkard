@@ -20,6 +20,16 @@ public class Policeman extends Hunter<Drunkard> {
     }
 
     @Override
+    protected boolean canLeaveHome() {
+        return true;
+    }
+
+    @Override
+    protected void onMoveEnds() {
+        return;
+    }
+
+    @Override
     public char getSymbol() {
         return 'P';
     }
