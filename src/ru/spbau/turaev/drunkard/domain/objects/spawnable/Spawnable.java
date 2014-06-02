@@ -21,7 +21,7 @@ public abstract class Spawnable extends MapObject {
     @Override
     public void move() {
         if (isHidden()) {
-            if (map.isFree(spawnX, spawnY)) {
+            if (map.getObjectAt(spawnX, spawnY).isFree()) {
                 this.x = spawnX;
                 this.y = spawnY;
                 appear();

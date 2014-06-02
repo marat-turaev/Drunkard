@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Map {
+public abstract class Map {
     private Lamp lamp = new Lamp(10, 3, this);
-    private int maxX;
-    private int maxY;
     private List<MapObject> mapObjects = new ArrayList<>();
     private int stepCount;
+    protected int maxX;
+    protected int maxY;
 
     public Map(int maxX, int maxY) {
         this.maxX = maxX;
@@ -34,8 +34,6 @@ public class Map {
     }
 
     public void doStep() {
-        stepCount++;
-
         for (int i = 0; i < mapObjects.size(); i++) {
             mapObjects.get(i).move();
         }
@@ -43,19 +41,11 @@ public class Map {
         if (stepCount % 20 == 0) {
             spawnDrunkard();
         }
+
+        stepCount++;
     }
 
-    public boolean isFree(int x, int y) {
-        for (MapObject obj : mapObjects) {
-            if (x == obj.getX() && y == obj.getY() && !obj.isHidden()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public MapObject getObjectByCoordinates(int x, int y) {
+    public MapObject getObjectAt(int x, int y) {
         for (MapObject obj : mapObjects) {
             if (x == obj.getX() && y == obj.getY() && !obj.isHidden()) {
                 return obj;
@@ -63,23 +53,6 @@ public class Map {
         }
 
         return new EmptyCell(x, y);
-    }
-
-    public void draw() {
-        for (int i = 0; i < maxY; i++) {
-            for (int j = 0; j < maxX; j++) {
-                System.out.print(getObjectByCoordinates(j, i).getSymbol());
-            }
-            System.out.println();
-        }
-    }
-
-    public int getMaxX() {
-        return maxX - 1;
-    }
-
-    public int getMaxY() {
-        return maxY - 1;
     }
 
     private void spawnDrunkard() {
@@ -94,25 +67,7 @@ public class Map {
         return mapObjects.stream().filter(o -> !o.isHidden());
     }
 
-    public List<MapObject> getAdjacentCells(MapObject from) {
-        List<MapObject> result = new ArrayList<>();
+    public abstract void draw();
 
-        if (from.getX() > 0) {
-            result.add(getObjectByCoordinates(from.getX() - 1, from.getY()));
-        }
-
-        if (from.getX() < maxX) {
-            result.add(getObjectByCoordinates(from.getX() + 1, from.getY()));
-        }
-
-        if (from.getY() > 0) {
-            result.add(getObjectByCoordinates(from.getX(), from.getY() - 1));
-        }
-
-        if (from.getY() < maxY) {
-            result.add(getObjectByCoordinates(from.getX(), from.getY() + 1));
-        }
-
-        return result;
-    }
+    public abstract List<MapObject> getAdjacentCells(MapObject from);
 }

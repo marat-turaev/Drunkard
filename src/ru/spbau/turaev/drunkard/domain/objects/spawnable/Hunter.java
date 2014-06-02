@@ -89,11 +89,11 @@ public abstract class Hunter<T extends MapObject> extends Spawnable {
             return;
         }
 
-        if (!algorithm.existsPathBetween(this, map.getObjectByCoordinates(spawnX, spawnY))) {
+        if (!algorithm.existsPathBetween(this, map.getObjectAt(spawnX, spawnY))) {
             return;
         }
 
-        MapObject nextMove = algorithm.getNextMove(this, map.getObjectByCoordinates(spawnX, spawnY));
+        MapObject nextMove = algorithm.getNextMove(this, map.getObjectAt(spawnX, spawnY));
         this.x = nextMove.getX();
         this.y = nextMove.getY();
     }

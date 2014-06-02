@@ -31,12 +31,7 @@ public class Drunkard extends Spawnable {
         }
 
         List<MapObject> neighbours = map.getAdjacentCells(this);
-        int rand = random.nextInt(4);
-        if (rand >= neighbours.size()) {
-            return;
-        }
-
-        MapObject neighbour = neighbours.get(rand);
+        MapObject neighbour = neighbours.get(random.nextInt(neighbours.size()));
         neighbour.hitBy(this);
 
         if (neighbour.isFree()) {
