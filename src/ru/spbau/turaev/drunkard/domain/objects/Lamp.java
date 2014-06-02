@@ -20,6 +20,6 @@ public class Lamp extends MapObject {
     }
 
     public Stream<Drunkard> getLightedDrunkards() {
-        return map.objects().stream().filter(mapObject -> distanceTo(mapObject) <= DISTANCE && mapObject instanceof Drunkard).map(d -> (Drunkard) d);
+        return map.getObjects().filter(mapObject -> distanceTo(mapObject) <= DISTANCE && mapObject instanceof Drunkard).map(d -> (Drunkard) d);
     }
 }

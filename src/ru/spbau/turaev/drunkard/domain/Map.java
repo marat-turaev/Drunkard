@@ -3,9 +3,11 @@ package ru.spbau.turaev.drunkard.domain;
 import ru.spbau.turaev.drunkard.domain.objects.*;
 import ru.spbau.turaev.drunkard.domain.objects.spawnable.Drunkard;
 import ru.spbau.turaev.drunkard.domain.objects.spawnable.Policeman;
+import ru.spbau.turaev.drunkard.domain.objects.spawnable.Tramp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Map {
     private final Lamp lamp;
@@ -24,6 +26,7 @@ public class Map {
         this.lamp = lamp;
         mapObjects.add(lamp);
         mapObjects.add(new Policeman(14, 3, this));
+        mapObjects.add(new Tramp(0, 4, this));
     }
 
     public Lamp getLamp() {
@@ -87,8 +90,8 @@ public class Map {
         mapObjects.add(new Bottle(x, y));
     }
 
-    public List<MapObject> objects() {
-        return mapObjects;
+    public Stream<MapObject> getObjects() {
+        return mapObjects.stream().filter(o -> !o.isHidden());
     }
 
     public List<MapObject> getAdjacentCells(MapObject from) {

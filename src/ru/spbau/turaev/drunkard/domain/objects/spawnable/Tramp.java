@@ -1,61 +1,68 @@
 package ru.spbau.turaev.drunkard.domain.objects.spawnable;
 
 import ru.spbau.turaev.drunkard.domain.Map;
+import ru.spbau.turaev.drunkard.domain.objects.Bottle;
 import ru.spbau.turaev.drunkard.domain.objects.MapObject;
 import ru.spbau.turaev.drunkard.domain.pathfinding.BFSAlgorithm;
 
 import java.util.Optional;
 
-enum PolicemanState {
+enum TrampState {
     HIDDEN,
     SEARCHING,
-    CHASING_DRUNKARD,
+    CHASING_BOTTLE,
     GOING_HOME
 }
 
-public class Policeman extends Spawnable {
-    private PolicemanState state;
-    private Drunkard target;
+public class Tramp extends Spawnable {
+    private Timer timer = new Timer();
+    private TrampState state;
+    private Bottle target;
     private BFSAlgorithm algorithm = new BFSAlgorithm(map);
 
-    public Policeman(int x, int y, Map map) {
-        super(x, y, map);
-        this.state = PolicemanState.HIDDEN;
+    public Tramp(int spawnX, int spawnY, Map map) {
+        super(spawnX, spawnY, map);
+        state = TrampState.HIDDEN;
     }
 
     @Override
     public void move() {
-        super.move();
-        if (state == PolicemanState.SEARCHING) {
-            findDrunkard();
+        if (state == TrampState.HIDDEN && timer.isZero()) {
+            super.move();
         }
 
-        if (state == PolicemanState.CHASING_DRUNKARD) {
-            followDrunkard();
+        if (state == TrampState.SEARCHING) {
+            findBottle();
         }
 
-        if (state == PolicemanState.GOING_HOME) {
+        if (state == TrampState.CHASING_BOTTLE) {
+            chaseBottle();
+        }
+
+        if (state == TrampState.GOING_HOME) {
             goHome();
         }
+
+        timer.tick();
     }
 
-    private void findDrunkard() {
-        Optional<Drunkard> maybeTarget = map.getLamp().getLightedDrunkards().filter(Drunkard::isLyingOrSleeping).findFirst();
-        if (maybeTarget.isPresent()) {
-            target = maybeTarget.get();
-            state = PolicemanState.CHASING_DRUNKARD;
+    private void findBottle() {
+        Optional<Bottle> maybeBottle = map.getObjects().filter(b -> b instanceof Bottle).map(b -> (Bottle) b).findFirst();
+        if (maybeBottle.isPresent()) {
+            target = maybeBottle.get();
+            state = TrampState.CHASING_BOTTLE;
         }
     }
 
-    private void followDrunkard() {
+    private void chaseBottle() {
         if (x == target.getX() && y == target.getY()) {
             target.hide();
-            state = PolicemanState.GOING_HOME;
+            state = TrampState.GOING_HOME;
             return;
         }
 
         if (!algorithm.existsPathBetween(this, target)) {
-            state = PolicemanState.GOING_HOME;
+            state = TrampState.GOING_HOME;
             return;
         }
 
@@ -66,7 +73,9 @@ public class Policeman extends Spawnable {
 
     private void goHome() {
         if (x == spawnX && y == spawnY) {
-            state = PolicemanState.SEARCHING;
+            state = TrampState.HIDDEN;
+            timer.set(30);
+            hide();
             return;
         }
 
@@ -79,14 +88,15 @@ public class Policeman extends Spawnable {
         this.y = nextMove.getY();
     }
 
+
     @Override
     public void appear() {
         super.appear();
-        this.state = PolicemanState.SEARCHING;
+        state = TrampState.SEARCHING;
     }
 
     @Override
     public char getSymbol() {
-        return 'P';
+        return 'z';
     }
 }

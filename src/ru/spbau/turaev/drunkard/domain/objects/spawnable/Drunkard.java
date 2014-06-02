@@ -60,9 +60,9 @@ public class Drunkard extends Spawnable {
         neighbour.hitBy(this);
 
         if (map.isFree(newX, newY)) {
+            dropBottle();
             x = newX;
             y = newY;
-            dropBottle();
         }
     }
 
