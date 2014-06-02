@@ -19,6 +19,25 @@ public class Drunkard extends MapObject {
             return;
         }
 
+        MapObject neighbour = makeRandomMove();
+
+        if (neighbour instanceof Post) {
+            sleep();
+        }
+
+        if (neighbour instanceof Bottle) {
+            lie();
+        }
+
+        if (neighbour instanceof Drunkard) {
+            Drunkard neighbourDrunkard = (Drunkard) neighbour;
+            if (neighbourDrunkard.state == DrunkardState.SLEEPING) {
+                sleep();
+            }
+        }
+    }
+
+    private MapObject makeRandomMove() {
         int newX = x;
         int newY = y;
 
@@ -46,11 +65,7 @@ public class Drunkard extends MapObject {
                 break;
         }
 
-        boolean wasMoved = false;
         if (x != newX || y != newY) {
-            wasMoved = true;
-        }
-        if (wasMoved) {
             dropBottle();
         }
 
@@ -59,18 +74,8 @@ public class Drunkard extends MapObject {
             x = newX;
             y = newY;
         }
-        if (neighbour instanceof Post) {
-            sleep();
-        }
-        if (neighbour instanceof Bottle) {
-            lie();
-        }
-        if (neighbour instanceof Drunkard) {
-            Drunkard neighbourDrunkard = (Drunkard) neighbour;
-            if (neighbourDrunkard.state == DrunkardState.SLEEPING) {
-                sleep();
-            }
-        }
+
+        return neighbour;
     }
 
     private void dropBottle() {

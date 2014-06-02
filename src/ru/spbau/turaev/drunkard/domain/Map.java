@@ -7,7 +7,6 @@ public class Map {
     private int x;
     private int y;
     private List<MapObject> mapObjects;
-    private List<Drunkard> drunkards;
     private int stepCount;
     private int inTavernDrunkards;
 
@@ -15,15 +14,14 @@ public class Map {
         this.x = x;
         this.y = y;
         mapObjects = new ArrayList<MapObject>();
-        drunkards = new ArrayList<Drunkard>();
         mapObjects.add(new Post(7, 7));
     }
 
     public void doStep() {
         stepCount++;
 
-        for (Drunkard drunkard : drunkards) {
-            drunkard.move();
+        for (int i = 0; i < mapObjects.size(); i++) {
+            mapObjects.get(i).move();
         }
 
         if (stepCount % 20 == 0) {
@@ -75,7 +73,6 @@ public class Map {
     private void spawnDrunkard() {
         if (isFree(0, 9)) {
             Drunkard drunkard = new Drunkard(0, 9, this);
-            drunkards.add(drunkard);
             mapObjects.add(drunkard);
             inTavernDrunkards--;
         } else {
