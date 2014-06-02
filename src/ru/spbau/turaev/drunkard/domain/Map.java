@@ -1,20 +1,22 @@
 package ru.spbau.turaev.drunkard.domain;
 
 import ru.spbau.turaev.drunkard.domain.objects.*;
+import ru.spbau.turaev.drunkard.domain.objects.spawnable.Drunkard;
+import ru.spbau.turaev.drunkard.domain.objects.spawnable.Policeman;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
     private final Lamp lamp;
-    private int x;
-    private int y;
+    private int maxX;
+    private int maxY;
     private List<MapObject> mapObjects;
     private int stepCount;
 
-    public Map(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Map(int maxX, int maxY) {
+        this.maxX = maxX;
+        this.maxY = maxY;
 
         mapObjects = new ArrayList<>();
         mapObjects.add(new Post(7, 7));
@@ -57,28 +59,28 @@ public class Map {
             }
         }
 
-        return new Empty(x, y);
+        return new EmptyCell(x, y);
     }
 
     public void draw() {
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < x; j++) {
-                System.out.print(getObjectByCoordinates(i, j).getSymbol());
+        for (int i = 0; i < maxY; i++) {
+            for (int j = 0; j < maxX; j++) {
+                System.out.print(getObjectByCoordinates(j, i).getSymbol());
             }
             System.out.println();
         }
     }
 
     public int getMaxX() {
-        return x - 1;
+        return maxX - 1;
     }
 
     public int getMaxY() {
-        return y - 1;
+        return maxY - 1;
     }
 
     private void spawnDrunkard() {
-        mapObjects.add(new Drunkard(0, 9, this));
+        mapObjects.add(new Drunkard(9, 0, this));
     }
 
     public void spawnBottleAt(int x, int y) {
@@ -87,5 +89,27 @@ public class Map {
 
     public List<MapObject> objects() {
         return mapObjects;
+    }
+
+    public List<MapObject> getAdjacentCells(MapObject from) {
+        List<MapObject> result = new ArrayList<>();
+
+        if (from.getX() > 0) {
+            result.add(getObjectByCoordinates(from.getX() - 1, from.getY()));
+        }
+
+        if (from.getX() < maxX) {
+            result.add(getObjectByCoordinates(from.getX() + 1, from.getY()));
+        }
+
+        if (from.getY() > 0) {
+            result.add(getObjectByCoordinates(from.getX(), from.getY() - 1));
+        }
+
+        if (from.getY() < maxY) {
+            result.add(getObjectByCoordinates(from.getX(), from.getY() + 1));
+        }
+
+        return result;
     }
 }

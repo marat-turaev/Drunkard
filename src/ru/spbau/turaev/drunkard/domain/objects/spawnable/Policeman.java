@@ -1,8 +1,8 @@
-package ru.spbau.turaev.drunkard.domain.objects;
+package ru.spbau.turaev.drunkard.domain.objects.spawnable;
 
 import ru.spbau.turaev.drunkard.domain.Map;
-import ru.spbau.turaev.drunkard.domain.pathfinding.DFSAlgorithm;
-import ru.spbau.turaev.drunkard.util.Tuple;
+import ru.spbau.turaev.drunkard.domain.objects.MapObject;
+import ru.spbau.turaev.drunkard.domain.pathfinding.BFSAlgorithm;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ enum PolicemanState {
 public class Policeman extends Spawnable {
     private PolicemanState state;
     private Drunkard target;
-    private DFSAlgorithm algorithm = new DFSAlgorithm(map);
+    private BFSAlgorithm algorithm = new BFSAlgorithm(map);
 
     public Policeman(int x, int y, Map map) {
         super(x, y, map);
@@ -26,7 +26,6 @@ public class Policeman extends Spawnable {
     @Override
     public void move() {
         super.move();
-
         if (state == PolicemanState.SEARCHING) {
             findDrunkard();
         }
@@ -49,18 +48,20 @@ public class Policeman extends Spawnable {
     }
 
     private void followDrunkard() {
-        if (x == target.x && y == target.y) {
+        if (x == target.getX() && y == target.getY()) {
             target.hide();
             state = PolicemanState.GOING_HOME;
+            return;
         }
 
         if (!algorithm.existsPathBetween(this, target)) {
             state = PolicemanState.GOING_HOME;
+            return;
         }
 
-        Tuple<Integer, Integer> nextMove = algorithm.getNextMove(this, map.getObjectByCoordinates(spawnX, spawnY));
-        this.x = nextMove.x;
-        this.y = nextMove.y;
+        MapObject nextMove = algorithm.getNextMove(this, target);
+        this.x = nextMove.getX();
+        this.y = nextMove.getY();
     }
 
     private void goHome() {
@@ -73,9 +74,9 @@ public class Policeman extends Spawnable {
             return;
         }
 
-        Tuple<Integer, Integer> nextMove = algorithm.getNextMove(this, map.getObjectByCoordinates(spawnX, spawnY));
-        this.x = nextMove.x;
-        this.y = nextMove.y;
+        MapObject nextMove = algorithm.getNextMove(this, map.getObjectByCoordinates(spawnX, spawnY));
+        this.x = nextMove.getX();
+        this.y = nextMove.getY();
     }
 
     @Override

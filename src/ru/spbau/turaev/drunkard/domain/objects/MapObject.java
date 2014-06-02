@@ -1,5 +1,7 @@
 package ru.spbau.turaev.drunkard.domain.objects;
 
+import ru.spbau.turaev.drunkard.domain.objects.spawnable.Drunkard;
+
 public abstract class MapObject {
     private boolean hidden;
     protected int x;

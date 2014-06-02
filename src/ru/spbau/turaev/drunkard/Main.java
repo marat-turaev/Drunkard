@@ -4,10 +4,10 @@ import ru.spbau.turaev.drunkard.domain.Map;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Map map = new Map(15, 15);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             map.doStep();
             map.draw();
             System.out.println();

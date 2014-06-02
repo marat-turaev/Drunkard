@@ -1,6 +1,7 @@
 package ru.spbau.turaev.drunkard.domain.objects;
 
 import ru.spbau.turaev.drunkard.domain.Map;
+import ru.spbau.turaev.drunkard.domain.objects.spawnable.Drunkard;
 
 import java.util.stream.Stream;
 
@@ -19,6 +20,6 @@ public class Lamp extends MapObject {
     }
 
     public Stream<Drunkard> getLightedDrunkards() {
-        return map.objects().stream().filter(mapObject -> distanceTo(mapObject) <= 3 && mapObject instanceof Drunkard).map(d -> (Drunkard) d);
+        return map.objects().stream().filter(mapObject -> distanceTo(mapObject) <= DISTANCE && mapObject instanceof Drunkard).map(d -> (Drunkard) d);
     }
 }

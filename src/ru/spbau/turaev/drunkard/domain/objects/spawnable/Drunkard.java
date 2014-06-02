@@ -1,6 +1,7 @@
-package ru.spbau.turaev.drunkard.domain.objects;
+package ru.spbau.turaev.drunkard.domain.objects.spawnable;
 
 import ru.spbau.turaev.drunkard.domain.Map;
+import ru.spbau.turaev.drunkard.domain.objects.MapObject;
 import ru.spbau.turaev.drunkard.util.RandomUtils;
 
 
