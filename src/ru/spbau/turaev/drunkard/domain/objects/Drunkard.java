@@ -5,36 +5,26 @@ import ru.spbau.turaev.drunkard.util.RandomUtils;
 
 
 enum DrunkardState {
+    HIDDEN,
     ACTIVE,
     SLEEPING,
     LYING
 }
 
 
-public class Drunkard extends MapObject {
+public class Drunkard extends Spawnable {
     private DrunkardState state;
-    private Map map;
     private char symbol;
 
     public Drunkard(int x, int y, Map map) {
-        super(x, y);
-        this.map = map;
-        this.state = DrunkardState.ACTIVE;
-        hide();
+        super(x, y, map);
+        this.state = DrunkardState.HIDDEN;
     }
 
     public void move() {
-        if (state == DrunkardState.SLEEPING || state == DrunkardState.LYING) {
-            return;
-        }
+        super.move();
 
-        if (isHidden()) {
-            if (!map.isFree(0, 9)) {
-                return;
-            }
-            this.x = 0;
-            this.y = 9;
-            appear();
+        if (state == DrunkardState.SLEEPING || state == DrunkardState.LYING) {
             return;
         }
 
@@ -65,14 +55,14 @@ public class Drunkard extends MapObject {
                 break;
         }
 
+        MapObject neighbour = map.getObjectByCoordinates(newX, newY);
+        neighbour.hitBy(this);
+
         if (map.isFree(newX, newY)) {
             x = newX;
             y = newY;
             dropBottle();
         }
-
-        MapObject neighbour = map.getObjectByCoordinates(newX, newY);
-        neighbour.hitBy(this);
     }
 
     @Override
@@ -106,6 +96,7 @@ public class Drunkard extends MapObject {
     @Override
     public void appear() {
         this.symbol = 'D';
+        this.state = DrunkardState.ACTIVE;
         super.appear();
     }
 

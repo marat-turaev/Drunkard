@@ -7,40 +7,25 @@ import ru.spbau.turaev.drunkard.util.Tuple;
 import java.util.Optional;
 
 enum PolicemanState {
+    HIDDEN,
     SEARCHING,
     FOLLOWING_DRUNKARD,
     GOING_HOME
 }
 
-public class Policeman extends MapObject {
-    private final int spawnX;
-    private final int spawnY;
+public class Policeman extends Spawnable {
     private PolicemanState state;
-    private Map map;
     private Drunkard target;
-    private DFSAlgorithm algorithm;
+    private DFSAlgorithm algorithm = new DFSAlgorithm(map);
 
     public Policeman(int x, int y, Map map) {
-        this.spawnX = x;
-        this.spawnY = y;
-        this.map = map;
-        this.state = PolicemanState.SEARCHING;
-        this.algorithm = new DFSAlgorithm(map);
-        hide();
+        super(x, y, map);
+        this.state = PolicemanState.HIDDEN;
     }
 
     @Override
     public void move() {
-        if (isHidden()) {
-            if (!map.isFree(spawnX, spawnY)) {
-                return;
-            } else {
-                this.x = spawnX;
-                this.y = spawnY;
-                appear();
-                return;
-            }
-        }
+        super.move();
 
         if (state == PolicemanState.SEARCHING) {
             findDrunkard();
@@ -91,6 +76,12 @@ public class Policeman extends MapObject {
         Tuple<Integer, Integer> nextMove = algorithm.getNextMove(this, map.getObjectByCoordinates(spawnX, spawnY));
         this.x = nextMove.x;
         this.y = nextMove.y;
+    }
+
+    @Override
+    public void appear() {
+        super.appear();
+        this.state = PolicemanState.SEARCHING;
     }
 
     @Override
