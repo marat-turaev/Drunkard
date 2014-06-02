@@ -31,13 +31,13 @@ public class Drunkard extends Spawnable {
             return;
         }
 
-        List<MapObject> adjacent = map.getAdjacentCells(this);
+        List<MapObject> neighbours = map.getAdjacentCells(this);
         int rand = random.nextInt(4);
-        if (rand >= adjacent.size()) {
+        if (rand >= neighbours.size()) {
             return;
         }
 
-        MapObject neighbour = adjacent.get(rand);
+        MapObject neighbour = neighbours.get(rand);
         neighbour.hitBy(this);
 
         if (neighbour.isFree()) {
