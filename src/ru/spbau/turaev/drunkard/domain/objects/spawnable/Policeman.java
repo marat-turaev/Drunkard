@@ -1,88 +1,22 @@
 package ru.spbau.turaev.drunkard.domain.objects.spawnable;
 
 import ru.spbau.turaev.drunkard.domain.Map;
-import ru.spbau.turaev.drunkard.domain.objects.MapObject;
-import ru.spbau.turaev.drunkard.domain.pathfinding.BFSAlgorithm;
 
-import java.util.Optional;
+import java.util.stream.Stream;
 
-enum PolicemanState {
-    HIDDEN,
-    SEARCHING,
-    CHASING_DRUNKARD,
-    GOING_HOME
-}
-
-public class Policeman extends Spawnable {
-    private PolicemanState state;
-    private Drunkard target;
-    private BFSAlgorithm algorithm = new BFSAlgorithm(map);
-
+public class Policeman extends Hunter<Drunkard> {
     public Policeman(int x, int y, Map map) {
         super(x, y, map);
-        this.state = PolicemanState.HIDDEN;
     }
 
     @Override
-    public void move() {
-        super.move();
-        if (state == PolicemanState.SEARCHING) {
-            findDrunkard();
-        }
-
-        if (state == PolicemanState.CHASING_DRUNKARD) {
-            followDrunkard();
-        }
-
-        if (state == PolicemanState.GOING_HOME) {
-            goHome();
-        }
-    }
-
-    private void findDrunkard() {
-        Optional<Drunkard> maybeTarget = map.getLamp().getLightedDrunkards().filter(Drunkard::isLyingOrSleeping).findFirst();
-        if (maybeTarget.isPresent()) {
-            target = maybeTarget.get();
-            state = PolicemanState.CHASING_DRUNKARD;
-        }
-    }
-
-    private void followDrunkard() {
-        if (x == target.getX() && y == target.getY()) {
-            target.hide();
-            state = PolicemanState.GOING_HOME;
-            return;
-        }
-
-        if (!algorithm.existsPathBetween(this, target)) {
-            state = PolicemanState.GOING_HOME;
-            return;
-        }
-
-        MapObject nextMove = algorithm.getNextMove(this, target);
-        this.x = nextMove.getX();
-        this.y = nextMove.getY();
-    }
-
-    private void goHome() {
-        if (x == spawnX && y == spawnY) {
-            state = PolicemanState.SEARCHING;
-            return;
-        }
-
-        if (!algorithm.existsPathBetween(this, map.getObjectByCoordinates(spawnX, spawnY))) {
-            return;
-        }
-
-        MapObject nextMove = algorithm.getNextMove(this, map.getObjectByCoordinates(spawnX, spawnY));
-        this.x = nextMove.getX();
-        this.y = nextMove.getY();
+    public Stream<Drunkard> getTargets() {
+        return map.getLamp().getLightedDrunkards().filter(Drunkard::isLyingOrSleeping);
     }
 
     @Override
-    public void appear() {
-        super.appear();
-        this.state = PolicemanState.SEARCHING;
+    protected void onEnterHome() {
+        state = HunterState.SEARCHING;
     }
 
     @Override
