@@ -9,4 +9,9 @@ public class Post extends MapObject {
     public char getSymbol() {
         return 'C';
     }
+
+    @Override
+    public void hitBy(Drunkard drunkard) {
+        drunkard.sleep();
+    }
 }

@@ -22,4 +22,8 @@ public abstract class MapObject {
     public void move() {
         return;
     }
+
+    public void hitBy(Drunkard drunkard) {
+        return;
+    }
 }

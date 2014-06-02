@@ -9,4 +9,9 @@ public class Bottle extends MapObject {
     public char getSymbol() {
         return 'B';
     }
+
+    @Override
+    public void hitBy(Drunkard drunkard) {
+        drunkard.lie();
+    }
 }
